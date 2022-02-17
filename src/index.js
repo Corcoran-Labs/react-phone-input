@@ -16,6 +16,7 @@ class PhoneInput extends React.Component {
       PropTypes.number
     ]),
     value: PropTypes.string,
+    relatedLabelId: PropTypes.string,
 
     onlyCountries: PropTypes.arrayOf(PropTypes.string),
     preferredCountries: PropTypes.arrayOf(PropTypes.string),
@@ -37,6 +38,7 @@ class PhoneInput extends React.Component {
     buttonClass: PropTypes.string,
     dropdownClass: PropTypes.string,
     searchClass: PropTypes.string,
+    arrowClass: PropTypes.string,
     // for styled-components
     className: PropTypes.string,
 
@@ -53,6 +55,7 @@ class PhoneInput extends React.Component {
 
     disableCountryCode: PropTypes.bool,
     disableDropdown: PropTypes.bool,
+    enableAbbreviation: PropTypes.bool,
     enableLongNumbers: PropTypes.oneOfType([
       PropTypes.bool,
       PropTypes.number
@@ -105,6 +108,7 @@ class PhoneInput extends React.Component {
   static defaultProps = {
     country: '',
     value: '',
+    relatedLabelId: '',
 
     onlyCountries: [],
     preferredCountries: [],
@@ -127,6 +131,7 @@ class PhoneInput extends React.Component {
     buttonClass: '',
     dropdownClass: '',
     searchClass: '',
+    arrowClass: '',
     className: '',
 
     autoFormat: true,
@@ -140,6 +145,7 @@ class PhoneInput extends React.Component {
     disableSearchIcon: false,
     disableInitialCountryGuess: false,
     disableCountryGuess: false,
+    enableAbbreviation: false,
 
     regions: '',
 
@@ -467,7 +473,6 @@ class PhoneInput extends React.Component {
   // Put the cursor to the end of the input (usually after a focus event)
   cursorToEnd = () => {
     const input = this.numberInputRef;
-    if (document.activeElement !== input) return;
     input.focus();
     let len = input.value.length;
     if (input.value.charAt(len-1)=== ')') len = len-1;
@@ -826,6 +831,7 @@ class PhoneInput extends React.Component {
 
       return (
         <li
+          id={`country-option-${index}`}
           ref={el => this[`flag_no_${index}`] = el}
           key={`flag_no_${index}`}
           data-flag-key={`flag_no_${index}`}
@@ -912,7 +918,7 @@ class PhoneInput extends React.Component {
 
   render() {
     const { onlyCountries, selectedCountry, showDropdown, formattedNumber, hiddenAreaCodes } = this.state;
-    const { disableDropdown, renderStringAsFlag, isValid, defaultErrorMessage, specialLabel } = this.props;
+    const { disableDropdown, renderStringAsFlag, isValid, defaultErrorMessage, specialLabel, enableAbbreviation, relatedLabelId } = this.props;
 
     let isValidValue, errorMessage;
     if (typeof isValid === 'boolean') {
@@ -932,11 +938,16 @@ class PhoneInput extends React.Component {
       [this.props.containerClass]: true,
       'react-tel-input': true,
     });
-    const arrowClasses = classNames({'arrow': true, 'up': showDropdown});
+    const arrowClasses = classNames({
+      'arrow': true,
+      'up': showDropdown,
+      [this.props.arrowClass]: true,
+    });
     const inputClasses = classNames({
       'form-control': true,
       'invalid-number': !isValidValue,
       'open': showDropdown,
+      'with-abbreviation': enableAbbreviation,
       [this.props.inputClass]: true,
     });
     const selectedFlagClasses = classNames({
@@ -950,6 +961,7 @@ class PhoneInput extends React.Component {
       [this.props.buttonClass]: true,
     });
     const inputFlagClasses = `flag ${selectedCountry && selectedCountry.iso2}`;
+    const triggeredButtonLabel = enableAbbreviation ? `selected-country-abbreviation ${relatedLabelId && relatedLabelId}` : (relatedLabelId ? relatedLabelId : null);
 
     return (
       <div
@@ -991,19 +1003,24 @@ class PhoneInput extends React.Component {
           {renderStringAsFlag ?
           <div className={selectedFlagClasses}>{renderStringAsFlag}</div>
           :
-          <div
+          <button
+            type='button'
+            role='combobox'
+            aria-labelledby={triggeredButtonLabel}
             onClick={disableDropdown ? undefined : this.handleFlagDropdownClick}
             className={selectedFlagClasses}
             title={selectedCountry ? `${selectedCountry.localName || selectedCountry.name}: + ${selectedCountry.dialCode}` : ''}
             tabIndex={disableDropdown ? '-1' : '0'}
-            role='button'
             aria-haspopup="listbox"
-            aria-expanded={showDropdown ? true : undefined}
+            aria-expanded={showDropdown}
+            aria-activedescendant={showDropdown ? `country-option-${this.state.highlightCountryIndex}` : null}
           >
-            <div className={inputFlagClasses}>
-              {!disableDropdown && <div className={arrowClasses}></div>}
-            </div>
-          </div>}
+
+            <span className={inputFlagClasses}></span>
+            {enableAbbreviation && <span className='abbreviation' id="selected-country-abbreviation">{selectedCountry.iso2}</span>}
+            {!disableDropdown && <span className={arrowClasses} aria-hidden="true"></span>}
+            <input type="hidden" role="textbox" value="" />
+          </button>}
 
           {showDropdown && this.getCountryDropdownList()}
         </div>
