@@ -1,22 +1,22 @@
 {
-  "name": "react-phone-input-2",
+  "name": "react-phone-input",
   "version": "2.15.0",
   "description": "A react component to format phone numbers",
   "main": "lib/lib.js",
   "typings": "index.d.ts",
   "scripts": {
     "test": "jest",
-    "start": "TARGET=dev_js NODE_ENV=development webpack-dev-server --progress",
+    "start": "SET TARGET=dev_js&& SET NODE_ENV=development&& webpack-dev-server --progress",
     "start:css": "TARGET=dev_css NODE_ENV=development webpack-dev-server --progress",
     "build": "npm run build:js && npm run build:css",
-    "build:js": "TARGET=build_js NODE_ENV=production webpack -p --progress",
-    "build:css": "TARGET=build_css NODE_ENV=production webpack -p --progress && rm ./main.js",
+    "build:js": "SET TARGET=build_js&& SET NODE_ENV=production&& webpack -p --progress",
+    "build:css": "SET TARGET=build_css&& SET NODE_ENV=production&& webpack -p --progress && rm ./main.js",
     "prepublishOnly": "npm run build",
     "analyze": "TARGET=analyze NODE_ENV=production webpack -p --progress"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bl00mber/react-phone-input-2.git"
+    "url": "git+https://github.com/Corcoran-Labs/react-phone-input.git"
   },
   "keywords": [
     "react",

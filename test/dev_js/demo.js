@@ -62,6 +62,24 @@ class Demo extends React.Component {
             country='it'
             preferredCountries={['it', 'se']}
           />
+          <p>Enable Country abbreviation</p>
+          <PhoneInput
+            enableAbbreviation
+            country='it'
+          />
+          <p>With label</p>
+          <label htmlFor='country-code-input' id="country-code-label" style={{color: '#a0a0a0', fontSize: '12px'}}>Country code</label>
+          <PhoneInput
+            country='de'
+            enableAbbreviation
+            relatedLabelId="country-code-label"
+            inputProps={{
+              id: "country-code-input"
+            }}
+            containerStyle={{
+              marginTop: '0',
+            }}
+          />
         </div>
 
         <div style={{display: 'inline-block', marginLeft: '40px'}}>
@@ -87,11 +105,8 @@ class Demo extends React.Component {
           <PhoneInput
             placeholder='Type your phone here'
             inputStyle={{
-              width: '300px',
-              height: '35px',
+              height: '45px',
               fontSize: '13px',
-              paddingLeft: '48px',
-              borderRadius: '5px'
             }}
             buttonStyle={{ borderRadius: '5px 0 0 5px' }}
             dropdownStyle={{ width: '300px' }}
