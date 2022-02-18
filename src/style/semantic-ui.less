@@ -3,7 +3,7 @@
 .react-tel-input {
   display: flex;
   align-items: stretch;
-  flex-direction: row-reverse;
+  flex-direction: row;
   .form-control {
     position: relative;
     font-size: 14px;
@@ -35,9 +35,8 @@
     &.open {
       box-shadow: rgba(34, 36, 38, 0.15) 0px 2px 3px 0px;
       border-color: rgb(150, 200, 218);
-      border-radius: 5px 5px 0 0;
+      border-radius: 0 5px 0 0;
       border-bottom: none;
-      box-shadow: none;
     }
   }
   .flag-dropdown {
@@ -51,6 +50,7 @@
     &.open {
       background: #fff;
       border-radius: 3px 0 0 0;
+      border-color: rgb(150, 200, 218);
       .selected-flag {
         background: #fff;
         border-radius: 3px 0 0 0;

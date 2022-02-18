@@ -148,7 +148,7 @@ describe('<PhoneInput /> other props', () => {
     expect(phoneInput.querySelector('.country-list').children.length).toBe(2) // search field & 1 search result
     expect(phoneInput.querySelector('.country-list').children[1].querySelector('.country-name').textContent).toBe('United Kingdom')
   })
-  
+
   test('search "undefined" string returns no non-matching results', () => {
     const { container: phoneInput } = render(
       <PhoneInput
@@ -184,7 +184,7 @@ describe('correct value update', () => {
         value={null}
       />)
 
-    expect(phoneInput.querySelector('.selected-flag').children.length).toBe(1)
+    expect(phoneInput.querySelector('.selected-flag').children.length).toBe(3)
     expect(phoneInput.querySelector('.selected-flag').children[0].className).toBe('flag 0')
   })
 
@@ -204,7 +204,7 @@ describe('correct value update', () => {
         country="es"
       />)
 
-    expect(phoneInput.querySelector('.selected-flag').children.length).toBe(1)
+    expect(phoneInput.querySelector('.selected-flag').children.length).toBe(3)
     expect(phoneInput.querySelector('.selected-flag').children[0].className).toBe('flag es')
   })
 

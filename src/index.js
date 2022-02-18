@@ -717,6 +717,15 @@ class PhoneInput extends React.Component {
       });
     }
 
+    const keyEvent = (e) => {
+      if (e.which === keys.ESC && this.state.showDropdown) {
+        e.preventDefault
+      }
+      this.setState({
+        showDropdown: false
+      }, this.cursorToEnd);
+    }
+
     switch (e.which) {
       case keys.DOWN:
         moveHighlight(1);
@@ -733,9 +742,7 @@ class PhoneInput extends React.Component {
         break;
       case keys.ESC:
       case keys.TAB:
-        this.setState({
-          showDropdown: false
-        }, this.cursorToEnd);
+        keyEvent(e)
         break;
       default:
         if ((e.which >= keys.A && e.which <= keys.Z) || e.which === keys.SPACE) {
@@ -817,6 +824,7 @@ class PhoneInput extends React.Component {
     const { enableSearch, searchNotFound, disableSearchIcon, searchClass, searchStyle, searchPlaceholder, autocompleteSearch } = this.props;
 
     const searchedCountries = this.getSearchFilteredCountries()
+    const idArray = [...new Array(searchedCountries.length)].map(() => `f${(~~(Math.random()*1e8)).toString(16)}`)
 
     let countryDropdownList = searchedCountries.map((country, index) => {
       const highlight = highlightCountryIndex === index;
@@ -828,13 +836,14 @@ class PhoneInput extends React.Component {
       });
 
       const inputFlagClasses = `flag ${country.iso2}`;
+      const uniqPrefix = idArray[index]
 
       return (
         <li
-          id={`country-option-${index}`}
+          id={`country-option-${uniqPrefix}`}
           ref={el => this[`flag_no_${index}`] = el}
-          key={`flag_no_${index}`}
-          data-flag-key={`flag_no_${index}`}
+          key={`country-option-${uniqPrefix}`}
+          data-flag-key={`country-option-${uniqPrefix}`}
           className={itemClasses}
           data-dial-code='1'
           tabIndex={disableDropdown ? '-1' : '0'}
@@ -969,32 +978,7 @@ class PhoneInput extends React.Component {
         style={this.props.style || this.props.containerStyle}
         onKeyDown={this.handleKeydown}>
         {specialLabel && <div className='special-label'>{specialLabel}</div>}
-        {errorMessage && <div className='invalid-number-message'>{errorMessage}</div>}
-        <input
-          className={inputClasses}
-          style={this.props.inputStyle}
-          onChange={this.handleInput}
-          onClick={this.handleInputClick}
-          onDoubleClick={this.handleDoubleClick}
-          onFocus={this.handleInputFocus}
-          onBlur={this.handleInputBlur}
-          onCopy={this.handleInputCopy}
-          value={formattedNumber}
-          onKeyDown={this.handleInputKeyDown}
-          placeholder={this.props.placeholder}
-          disabled={this.props.disabled}
-          type='tel'
-          {...this.props.inputProps}
-          ref={el => {
-            this.numberInputRef = el;
-            if (typeof this.props.inputProps.ref === 'function') {
-              this.props.inputProps.ref(el);
-            } else if (typeof this.props.inputProps.ref === 'object') {
-              this.props.inputProps.ref.current = el;
-            }
-          }}
-        />
-
+        {errorMessage && <div className='invalid-number-message'>errorMessage</div>}
         <div
           className={flagViewClasses}
           style={this.props.buttonStyle}
@@ -1024,6 +1008,30 @@ class PhoneInput extends React.Component {
 
           {showDropdown && this.getCountryDropdownList()}
         </div>
+        <input
+          className={inputClasses}
+          style={this.props.inputStyle}
+          onChange={this.handleInput}
+          onClick={this.handleInputClick}
+          onDoubleClick={this.handleDoubleClick}
+          onFocus={this.handleInputFocus}
+          onBlur={this.handleInputBlur}
+          onCopy={this.handleInputCopy}
+          value={formattedNumber}
+          onKeyDown={this.handleInputKeyDown}
+          placeholder={this.props.placeholder}
+          disabled={this.props.disabled}
+          type='tel'
+          {...this.props.inputProps}
+          ref={el => {
+            this.numberInputRef = el;
+            if (typeof this.props.inputProps.ref === 'function') {
+              this.props.inputProps.ref(el);
+            } else if (typeof this.props.inputProps.ref === 'object') {
+              this.props.inputProps.ref.current = el;
+            }
+          }}
+        />
       </div>
     );
   }
