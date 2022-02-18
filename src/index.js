@@ -719,7 +719,7 @@ class PhoneInput extends React.Component {
 
     const keyEvent = (e) => {
       if (e.which === keys.ESC && this.state.showDropdown) {
-        e.preventDefault
+        e.preventDefault();
       }
       this.setState({
         showDropdown: false
