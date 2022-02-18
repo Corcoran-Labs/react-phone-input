@@ -1,4 +1,4 @@
-# React-Phone-Input-2
+# React-Phone-Input
 Highly customizable phone input component with auto formatting.
 
 [![npm version](https://img.shields.io/npm/v/react-phone-input-2.svg?style=flat)](https://www.npmjs.com/package/react-phone-input-2)
@@ -10,12 +10,12 @@ Highly customizable phone input component with auto formatting.
 
 ## Installation
 ```shell-script
-npm install react-phone-input-2 --save
+npm install @corcoran/react-phone-input --save
 ```
 
 ## Usage
 ```jsx
-import PhoneInput from 'react-phone-input-2'
+import PhoneInput from '@corcoran/react-phone-input'
 import 'react-phone-input-2/lib/style.css'
 
 <PhoneInput
@@ -138,6 +138,11 @@ import 'react-phone-input-2/lib/style.css'
     <td> false </td>
     <td> hide icon for the search field </td>
   </tr>
+  <tr>
+    <td> enableAbbreviation </td>
+    <td> false </td>
+    <td> enable country abbreviation </td>
+  </tr>
 </table>
 
 ```jsx
@@ -193,6 +198,12 @@ import 'react-phone-input-2/lib/style.css'
     <td> searchClass </td>
     <td> string </td>
     <td colspan="2"> class for search field </td>
+  </tr>
+  
+  <tr>
+    <td> arrowClass </td>
+    <td> string </td>
+    <td colspan="2"> class for arrow icon </td>
   </tr>
 
   <tr>
