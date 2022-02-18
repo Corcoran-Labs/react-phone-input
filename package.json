@@ -1,5 +1,5 @@
 {
-  "name": "react-phone-input",
+  "name": "@corcoran/react-phone-input",
   "version": "2.15.0",
   "description": "A react component to format phone numbers",
   "main": "lib/lib.js",
@@ -91,5 +91,9 @@
     "lodash.reduce": "^4.6.0",
     "lodash.startswith": "^4.2.1",
     "prop-types": "^15.7.2"
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "test"
   }
 }
