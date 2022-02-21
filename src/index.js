@@ -220,12 +220,16 @@ class PhoneInput extends React.Component {
     );
 
     const highlightCountryIndex = onlyCountries.findIndex(o => o == countryGuess);
+    const onlyCountriesWithKey = onlyCountries.map((country) => {
+      country.key = `f${(~~(Math.random()*1e8)).toString(16)}`
+      return country
+    })
 
     this.state = {
       showDropdown: props.showDropdown,
 
       formattedNumber,
-      onlyCountries,
+      onlyCountries: onlyCountriesWithKey,
       preferredCountries,
       hiddenAreaCodes,
       selectedCountry: countryGuess,
@@ -824,7 +828,6 @@ class PhoneInput extends React.Component {
     const { enableSearch, searchNotFound, disableSearchIcon, searchClass, searchStyle, searchPlaceholder, autocompleteSearch } = this.props;
 
     const searchedCountries = this.getSearchFilteredCountries()
-    const idArray = [...new Array(searchedCountries.length)].map(() => `f${(~~(Math.random()*1e8)).toString(16)}`)
 
     let countryDropdownList = searchedCountries.map((country, index) => {
       const highlight = highlightCountryIndex === index;
@@ -836,14 +839,13 @@ class PhoneInput extends React.Component {
       });
 
       const inputFlagClasses = `flag ${country.iso2}`;
-      const uniqPrefix = idArray[index]
 
       return (
         <li
-          id={`country-option-${uniqPrefix}`}
+          id={`country-option-${country.key}`}
           ref={el => this[`flag_no_${index}`] = el}
-          key={`country-option-${uniqPrefix}`}
-          data-flag-key={`country-option-${uniqPrefix}`}
+          key={`country-option-${country.key}`}
+          data-flag-key={`country-option-${country.key}`}
           className={itemClasses}
           data-dial-code='1'
           tabIndex={disableDropdown ? '-1' : '0'}
@@ -971,6 +973,12 @@ class PhoneInput extends React.Component {
     });
     const inputFlagClasses = `flag ${selectedCountry && selectedCountry.iso2}`;
     const triggeredButtonLabel = enableAbbreviation ? `selected-country-abbreviation ${relatedLabelId && relatedLabelId}` : (relatedLabelId ? relatedLabelId : null);
+    const countryArray = this.getSearchFilteredCountries()
+    const countrySelected = countryArray[this.state.highlightCountryIndex]
+    let keyCountry = null
+    if (countrySelected) {
+      keyCountry = countrySelected.key
+    }
 
     return (
       <div
@@ -997,7 +1005,7 @@ class PhoneInput extends React.Component {
             tabIndex={disableDropdown ? '-1' : '0'}
             aria-haspopup="listbox"
             aria-expanded={showDropdown}
-            aria-activedescendant={showDropdown ? `country-option-${this.state.highlightCountryIndex}` : null}
+            aria-activedescendant={showDropdown ? `country-option-${keyCountry}` : null}
           >
 
             <span className={inputFlagClasses}></span>
