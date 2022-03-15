@@ -239,6 +239,7 @@ class PhoneInput extends React.Component {
       freezeSelection: false,
       debouncedQueryStingSearcher: debounce(this.searchCountry, 250),
       searchValue: '',
+      abbreviationId: `selected-country-abbreviation-${(~~(Math.random()*1e8)).toString(16)}`,
     };
   }
 
@@ -925,7 +926,7 @@ class PhoneInput extends React.Component {
   }
 
   render() {
-    const { onlyCountries, selectedCountry, showDropdown, formattedNumber, hiddenAreaCodes } = this.state;
+    const { onlyCountries, selectedCountry, showDropdown, formattedNumber, hiddenAreaCodes, abbreviationId } = this.state;
     const { disableDropdown, renderStringAsFlag, isValid, defaultErrorMessage, specialLabel, enableAbbreviation, relatedLabelId } = this.props;
 
     let isValidValue, errorMessage;
@@ -969,7 +970,6 @@ class PhoneInput extends React.Component {
       [this.props.buttonClass]: true,
     });
     const inputFlagClasses = `flag ${selectedCountry && selectedCountry.iso2}`;
-    const abbreviationId = `selected-country-abbreviation-${(~~(Math.random()*1e8)).toString(16)}`
     const triggeredButtonLabel = enableAbbreviation ? `${abbreviationId} ${relatedLabelId && relatedLabelId}` : (relatedLabelId ? relatedLabelId : null);
     const countryArray = this.getSearchFilteredCountries()
     const countrySelected = countryArray[this.state.highlightCountryIndex]
