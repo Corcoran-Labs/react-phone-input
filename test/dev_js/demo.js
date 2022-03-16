@@ -65,6 +65,7 @@ class Demo extends React.Component {
           <p>Enable Country abbreviation</p>
           <PhoneInput
             enableAbbreviation
+            abbreviationIdAttr="abbr-id"
             country='it'
           />
           <p>With label</p>

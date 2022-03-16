@@ -17,6 +17,7 @@ class PhoneInput extends React.Component {
     ]),
     value: PropTypes.string,
     relatedLabelId: PropTypes.string,
+    abbreviationIdAttr: PropTypes.string,
 
     onlyCountries: PropTypes.arrayOf(PropTypes.string),
     preferredCountries: PropTypes.arrayOf(PropTypes.string),
@@ -109,6 +110,7 @@ class PhoneInput extends React.Component {
     country: '',
     value: '',
     relatedLabelId: '',
+    abbreviationIdAttr: `selected-country-abbreviation`,
 
     onlyCountries: [],
     preferredCountries: [],
@@ -239,7 +241,6 @@ class PhoneInput extends React.Component {
       freezeSelection: false,
       debouncedQueryStingSearcher: debounce(this.searchCountry, 250),
       searchValue: '',
-      abbreviationId: `selected-country-abbreviation-${(~~(Math.random()*1e8)).toString(16)}`,
     };
   }
 
@@ -926,8 +927,8 @@ class PhoneInput extends React.Component {
   }
 
   render() {
-    const { onlyCountries, selectedCountry, showDropdown, formattedNumber, hiddenAreaCodes, abbreviationId } = this.state;
-    const { disableDropdown, renderStringAsFlag, isValid, defaultErrorMessage, specialLabel, enableAbbreviation, relatedLabelId } = this.props;
+    const { onlyCountries, selectedCountry, showDropdown, formattedNumber, hiddenAreaCodes } = this.state;
+    const { disableDropdown, renderStringAsFlag, isValid, defaultErrorMessage, specialLabel, enableAbbreviation, relatedLabelId, abbreviationIdAttr } = this.props;
 
     let isValidValue, errorMessage;
     if (typeof isValid === 'boolean') {
@@ -970,7 +971,7 @@ class PhoneInput extends React.Component {
       [this.props.buttonClass]: true,
     });
     const inputFlagClasses = `flag ${selectedCountry && selectedCountry.iso2}`;
-    const triggeredButtonLabel = enableAbbreviation ? `${abbreviationId} ${relatedLabelId && relatedLabelId}` : (relatedLabelId ? relatedLabelId : null);
+    const triggeredButtonLabel = enableAbbreviation ? `${abbreviationIdAttr} ${relatedLabelId && relatedLabelId}` : (relatedLabelId ? relatedLabelId : null);
     const countryArray = this.getSearchFilteredCountries()
     const countrySelected = countryArray[this.state.highlightCountryIndex]
     let keyCountry = null
@@ -1007,7 +1008,7 @@ class PhoneInput extends React.Component {
           >
 
             <span className={inputFlagClasses}></span>
-            {enableAbbreviation && <span className='abbreviation' id={abbreviationId}>{selectedCountry.iso2}</span>}
+            {enableAbbreviation && <span className='abbreviation' id={abbreviationIdAttr}>{selectedCountry.iso2}</span>}
             {!disableDropdown && <span className={arrowClasses} aria-hidden="true"></span>}
             <input type="hidden" role="textbox" value="" />
           </button>}
